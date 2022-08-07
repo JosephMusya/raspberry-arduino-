@@ -6,31 +6,27 @@ void setup() {
   Serial.begin(9600);
 }
 
+void loop() {
+  while (Serial.available() == 0){
+  }
 
-
-void led() {
-  delay(500);
-  digitalWrite(my_led, 1);
-  delay(250);
-  digitalWrite(my_led, 0);
-  delay(125);
+  data = Serial.readStringUntil('\r');
+  if ((data) == "ON"){
+    digitalWrite(my_led, HIGH);
+  }
+  else if ((data) == "OFF"){
+    digitalWrite(my_led, LOW);
+  }
+  else {
+    led();
+    led();
+    led();
+  }
 }
 
-void loop() {
-  if (Serial.available()>0){
-    data = Serial.readStringUntil('\n');
-    if (data == "ON") {
-      pinMode(my_led,1);
-      Serial.write("Led Turned ON");
-    }
-    if (data == "OFF") {
-      pinMode(my_led,0);
-      Serial.write("Led Turned OFF");
-    }
-
-    else {
-      Serial.write("Invalid Data");
-      led();
-    }    
-  }
+void led() {
+  digitalWrite(my_led, 1);
+  delay(25);
+  digitalWrite(my_led, 0);
+  delay(25);
 }
