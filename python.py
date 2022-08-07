@@ -22,7 +22,7 @@ if __name__ == '__main__':
             cmd = i+'\r'
             print("Sending data...")
             ser.write(cmd.encode())
-            feedback = ser.read().decode().strip('')
+            feedback = ser.read().decode()
             print("Received => ",feedback)
 #-----------------------------------------------#        
         # print("Sending data...")
