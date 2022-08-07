@@ -22,9 +22,14 @@ if __name__ == '__main__':
             cmd = i+'\r'
             print("Sending data...")
             ser.write(cmd.encode())
-        # ser.write(b'on')
+            feedback = ser.read().decode().strip('')
+            print("Received => ",feedback)
+#-----------------------------------------------#        
+        # print("Sending data...")
+        # ser.write('ON\r'.encode())
+        # recv = ser.read().decode()
         # time.sleep(1)
-        # ser.write(b'off')
+        # ser.write('OFF\r'.encode())
         # time.sleep(1)
-        # feedback = ser.read().decode('utf-8')
-        # print(feedback)
+            
+        
