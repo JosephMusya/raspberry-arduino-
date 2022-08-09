@@ -60,14 +60,19 @@ void start() {
   //  Serial.println(received);
   if (received < 600) {
     sensor_status = 1;
-    stopConveyor();
+    stopConveyor();    
 
     if (!sent) {
       Serial.print(sensor_status);
+      digitalWrite(led, HIGH);
       sent = true;
-      //Serial.println("Object present...");
-    }
-    digitalWrite(led, HIGH);
+      while (true){
+        String progress = Serial.readStringUntil('\r');        
+        if (progress == "DONE"){
+          break;
+        }
+      }
+    }    
   }
   else if (received > 600) {
     moveConveyor();

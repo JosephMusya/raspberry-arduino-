@@ -34,6 +34,9 @@ async def pick():
     for i in range(0,5):
         print("Picking...")
         await asyncio.sleep(1)
+    await asyncio.create_task(writeArduino('DONE'))
+    
+    
                 
 async def main():   
     ''' 
