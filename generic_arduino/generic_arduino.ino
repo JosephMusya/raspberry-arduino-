@@ -1,13 +1,23 @@
 int sensor_status = 0;
 int random_val;
 int led = 13;
+int transmitter = 3;
+
+float received;
+float noise;
+float denoised;
+
 String response;
 String data;
+
 bool system_status = false;
 bool sent = false;
+
 void setup() {
   // put your setup code here, to run once:
   pinMode(led, OUTPUT);
+  pinMode(transmitter, OUTPUT);
+
   Serial.begin(9600);
 }
 
@@ -18,7 +28,7 @@ void loop() {
 
   if (system_status) {
     start();
-    delay(1000);
+    delay(10);
   }
   else {
     alert();
@@ -44,19 +54,22 @@ void alert() {
   delay(50);
 }
 void start() {
-  random_val = random(0, 10);
-  if (random_val > 1) {
+  digitalWrite(transmitter, HIGH);
+  delayMicroseconds(10);
+  received = analogRead(A0);
+  //  Serial.println(received);
+  if (received < 600) {
     sensor_status = 1;
     stopConveyor();
-    
-    if (!sent){
+
+    if (!sent) {
       Serial.print(sensor_status);
       sent = true;
       //Serial.println("Object present...");
-    }    
+    }
     digitalWrite(led, HIGH);
   }
-  else {
+  else if (received > 600) {
     moveConveyor();
     sent = false;
     digitalWrite(led, LOW);
