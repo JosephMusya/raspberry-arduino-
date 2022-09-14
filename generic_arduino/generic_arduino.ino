@@ -1,7 +1,9 @@
 int sensor_status = 0;
-int random_val;
 int led = 13;
-int transmitter = 3;
+int transmitter = 12;
+int relay = 11;
+int motorPin1 = 8;
+int motorPin2 = 9;
 
 float received;
 float noise;
@@ -15,7 +17,13 @@ bool sent = false;
 void setup() {
   // put your setup code here, to run once:
   pinMode(led, OUTPUT);
+  pinMode(relay,OUTPUT);
   pinMode(transmitter, OUTPUT);
+  pinMode(motorPin1, OUTPUT);
+  pinMode(motorPin2, OUTPUT);
+  pinMode(6,OUTPUT);
+  digitalWrite(relay,LOW);
+  Serial.print("Welcome");
 
 
   Serial.begin(9600);
@@ -59,9 +67,9 @@ void start() {
   noise = 1023.0 - analogRead(A0);
 
   denoised = received - noise;
-  //  Serial.println(denoised);
+  Serial.println(denoised);
 
-  if (denoised > 200) {
+  if (denoised > 0) {
     sensor_status = 1;
     stopConveyor();
     if (!sent) {
@@ -88,9 +96,15 @@ void start() {
 }
 
 void moveConveyor() {
-
+  digitalWrite(relay,HIGH);
+//  analogWrite(6,50);
+  Serial.println("Conveyor moving");
+  digitalWrite(motorPin1, HIGH);
+  digitalWrite(motorPin2, LOW);
 }
 
 void stopConveyor() {
-
+  digitalWrite(relay,LOW);
+  digitalWrite(motorPin1, LOW);
+  digitalWrite(motorPin2, LOW);
 }
