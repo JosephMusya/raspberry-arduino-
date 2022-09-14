@@ -23,8 +23,6 @@ void setup() {
   pinMode(motorPin2, OUTPUT);
   pinMode(6,OUTPUT);
   digitalWrite(relay,LOW);
-  Serial.print("Welcome");
-
 
   Serial.begin(9600);
 }
@@ -67,9 +65,9 @@ void start() {
   noise = 1023.0 - analogRead(A0);
 
   denoised = received - noise;
-  Serial.println(denoised);
+  //Serial.2`ln(denoised);
 
-  if (denoised > 0) {
+  if (denoised > 10) {
     sensor_status = 1;
     stopConveyor();
     if (!sent) {
@@ -98,7 +96,7 @@ void start() {
 void moveConveyor() {
   digitalWrite(relay,HIGH);
 //  analogWrite(6,50);
-  Serial.println("Conveyor moving");
+  //Serial.println("Conveyor moving");
   digitalWrite(motorPin1, HIGH);
   digitalWrite(motorPin2, LOW);
 }
