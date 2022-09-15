@@ -25,7 +25,7 @@ def connect(com_port):
         print(f"Skipped {port}")
 async def readArduino():
     print("Reading...")
-    # ser.timeout = 5
+    ser.timeout = 2
     data = ser.read().decode()
     return data
 
