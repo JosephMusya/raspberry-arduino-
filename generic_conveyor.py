@@ -4,7 +4,7 @@ import time
 import sys
 
 #com_port = '/dev/ttyACM0'
-baudrate = 4800
+baudrate = 9600
 print("System Initializing...")
 time.sleep(3)
 def connect(com_port):
@@ -12,7 +12,7 @@ def connect(com_port):
     connected_devices = len(com_port)
     for i in range(0,connected_devices):
         port = str(com_port[i]).upper()
-        if 'USB-SERIAL' in port:
+        if 'USB SERIAL' in port:
             port_number = port.split(' ')[0]
             try:
                 ser = serial.Serial(port_number,baudrate)
@@ -24,12 +24,16 @@ def connect(com_port):
                 print(" Check whether the Port is busy")
         print(f"Skipped {port}")
 async def readArduino():
-    return ser.read().decode()
+    print("Reading...")
+    # ser.timeout = 5
+    data = ser.read().decode()
+    return data
 
 async  def writeArduino(data):
     cmd = str(data)
     cmd = cmd+'\r'   
     ser.write(cmd.encode())
+    print("Data written succesfully...")
 async def pick():
     for i in range(0,5):
         print("Picking...")
