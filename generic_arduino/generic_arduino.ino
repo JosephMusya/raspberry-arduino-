@@ -74,10 +74,9 @@ void start() {
     sensor_status = 1;
     stopConveyor();
     if (!sent) {
-      //Serial.print(sensor_status);
+      Serial.print(sensor_status);
       digitalWrite(led, HIGH);
       sent = true;
-
       while (true) {
         if (Serial.available() > 0) {
           String progress =  Serial.readStringUntil('\r');
