@@ -2,8 +2,12 @@ int sensor_status = 0;
 int led = 13;
 int transmitter = 12;
 int relay = 11;
-int motorPin1 = 8;
-int motorPin2 = 9;
+int motorPin1 = 7;
+int motorPin2 = 8;
+int enablePin = 9;
+int analogPin = A0;
+float pwm;
+int readVal;
 
 float received;
 float noise;
@@ -17,12 +21,12 @@ bool sent = false;
 void setup() {
   // put your setup code here, to run once:
   pinMode(led, OUTPUT);
-  pinMode(relay,OUTPUT);
+  pinMode(relay, OUTPUT);
   pinMode(transmitter, OUTPUT);
   pinMode(motorPin1, OUTPUT);
   pinMode(motorPin2, OUTPUT);
-  pinMode(6,OUTPUT);
-  digitalWrite(relay,LOW);
+  pinMode(enablePin, OUTPUT);
+  //digitalWrite(relay,LOW);
 
   Serial.begin(9600);
 }
@@ -58,20 +62,19 @@ void alert() {
 void start() {
   digitalWrite(transmitter, HIGH);
   delayMicroseconds(2);
-  received = 1023.0 - analogRead(A0);
+  received = 1023.0 - analogRead(A1);
 
   digitalWrite(transmitter, LOW);
   delayMicroseconds(2);
-  noise = 1023.0 - analogRead(A0);
+  noise = 1023.0 - analogRead(A1);
 
   denoised = received - noise;
-  //Serial.2`ln(denoised);
-
-  if (denoised > 10) {
+  Serial.print(denoised);
+  if (denoised > 40) {
     sensor_status = 1;
     stopConveyor();
     if (!sent) {
-      Serial.print(sensor_status);
+      //Serial.print(sensor_status);
       digitalWrite(led, HIGH);
       sent = true;
 
@@ -94,15 +97,16 @@ void start() {
 }
 
 void moveConveyor() {
-  digitalWrite(relay,HIGH);
-//  analogWrite(6,50);
-  //Serial.println("Conveyor moving");
-  digitalWrite(motorPin1, HIGH);
-  digitalWrite(motorPin2, LOW);
+  //digitalWrite(relay,HIGH);
+  readVal = analogRead(analogPin);
+  pwm = map(readVal, 0, 1023, 0, 255);
+  analogWrite(enablePin, pwm);
+  digitalWrite(motorPin1, LOW);
+  digitalWrite(motorPin2, HIGH);
 }
 
 void stopConveyor() {
-  digitalWrite(relay,LOW);
+  //digitalWrite(relay,LOW);
   digitalWrite(motorPin1, LOW);
   digitalWrite(motorPin2, LOW);
 }
