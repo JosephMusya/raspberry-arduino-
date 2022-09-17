@@ -1,11 +1,10 @@
 int sensor_status = 0;
 int led = 13;
-int transmitter = 12;
-int relay = 11;
+int transmitter = 11;
 int motorPin1 = 7;
 int motorPin2 = 8;
 int enablePin = 9;
-int analogPin = A0;
+int analogPin = A1;
 float pwm;
 int readVal;
 
@@ -21,7 +20,6 @@ bool sent = false;
 void setup() {
   // put your setup code here, to run once:
   pinMode(led, OUTPUT);
-  pinMode(relay, OUTPUT);
   pinMode(transmitter, OUTPUT);
   pinMode(motorPin1, OUTPUT);
   pinMode(motorPin2, OUTPUT);
@@ -62,15 +60,16 @@ void alert() {
 void start() {
   digitalWrite(transmitter, HIGH);
   delayMicroseconds(2);
-  received = 1023.0 - analogRead(A1);
+  received = 1023.0 - analogRead(A0);
 
   digitalWrite(transmitter, LOW);
   delayMicroseconds(2);
-  noise = 1023.0 - analogRead(A1);
+  noise = 1023.0 - analogRead(A0);
 
   denoised = received - noise;
-  Serial.print(denoised);
-  if (denoised > 40) {
+//  Serial.println(denoised);
+//  delay(500);
+  if (received > 250) {
     sensor_status = 1;
     stopConveyor();
     if (!sent) {
