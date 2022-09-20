@@ -67,8 +67,8 @@ void start() {
   noise = 1023.0 - analogRead(A0);
 
   denoised = received - noise;
-//  Serial.println(denoised);
-//  delay(500);
+  //  Serial.println(denoised);
+  //  delay(500);
   if (received > 250) {
     sensor_status = 1;
     stopConveyor();
@@ -80,6 +80,7 @@ void start() {
         if (Serial.available() > 0) {
           String progress =  Serial.readStringUntil('\r');
           if ((progress) == "DONE") {
+            moveConveyor();
             break;
           }
         }
